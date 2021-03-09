@@ -5,7 +5,7 @@ from spacy_help_functions import get_entities, create_entity_pairs
 raw_text = "Zuckerberg attended Harvard University, where he launched the Facebook social networking service from his dormitory room on February 4, 2004, with college roommates Eduardo Saverin, Andrew McCollum, Dustin Moskovitz, and Chris Hughes. Bill Gates stepped down as chairman of Microsoft in February 2014 and assumed a new post as technology adviser to support the newly appointed CEO Satya Nadella. "
 
 # TODO: filter entities of interest based on target relation
-entities_of_interest = ["ORGANIZATION", "PERSON", "LOCATION", "CITY", "STATE_OR_PROVINCE", "COUNTRY"]
+entities_of_interest = ["Schools_Attended", "Work_For", "Live_In", "Top_Member_Employees]
 
 # Load spacy model
 nlp = spacy.load("en_core_web_lg")  
@@ -52,5 +52,8 @@ for sentence in doc.sents:
         # '1':"per:schools_attended"
         # '2':"per:employee_of"
         # '3':"per:cities_of_residence"
-        # '4':"org:top_members/employees"
+        # '4':"org:top_members"
+                        
+#<r> is an integer between 1 and 4, indicating the relation to extract: 1 is for Schools_Attended, 2 is for Work_For, 3 is for Live_In, and 4 is for Top_Member_Employees
+r_dict = {1: "Schools_Attended", 2: "Work_For", 3: "Live_In", 4: "Top_Member_Employees"}
 
