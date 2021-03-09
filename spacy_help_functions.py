@@ -18,7 +18,24 @@ bert2spacy = {
         "DATE": "DATE"
         }
 
+#extract text given a url 
+def extract_info(url):
+    page = ""
+    try:
+        page = urllib2.urlopen(url).read()
+    except Exception as error:
+        print "Can't extract textual information. \nException: {}.".format(url, error)
+        return [""]
+    soup = bs(page, "html.parser", from_encoding="utf-8")
+    for info in soup(["script", "style", "sup"]):
+        info.extract()
 
+    text = soup.get_text()
+    lines = (line.strip() for line in text.splitlines())
+    blocks = (phrase.strip() for line in lines for phrase in line.split(" "))
+    #step 3.3 c truncate 
+    return [" ".join(content for content in blocks if (content and len(str(content)) < 20,000)) if text else ""
+            
 def get_entities(sentence, entities_of_interest):
     return [(e.text, spacy2bert[e.label_]) for e in sentence.ents if e.label_ in spacy2bert]
 
