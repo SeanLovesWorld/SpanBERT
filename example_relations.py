@@ -53,7 +53,55 @@ for sentence in doc.sents:
         # '2':"per:employee_of"
         # '3':"per:cities_of_residence"
         # '4':"org:top_members"
+SON_API_KEY, SEARCH_ENGINE_ID, r, t, q, k = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], sys.argv[5], \
+                                                 sys.argv[6]
                         
 #<r> is an integer between 1 and 4, indicating the relation to extract: 1 is for Schools_Attended, 2 is for Work_For, 3 is for Live_In, and 4 is for Top_Member_Employees
 r_dict = {1: "Schools_Attended", 2: "Work_For", 3: "Live_In", 4: "Top_Member_Employees"}
+                        
+# Schools_Attended: Subject: PERSON, Object: ORGANIZATION
+#Work_For: Subject: PERSON, Object: ORGANIZATION
+#Live_In: Subject: PERSON, Object: one of LOCATION, CITY, STATE_OR_PROVINCE, or COUNTRY
+#Top_Member_Employees: Subject: ORGANIZATION, Object: PERSON
+                       
+r_list = {1: ["PERSON", "ORGANIZATION"], 2: ["PERSON", "ORGANIZATION"], 3: ["PERSON", "LOCATION"],
+              4: ["ORGANIZATION", "PERSON"]}
+#initialize X for empty set 
+X = {}
+k = int(k)
+t = float(t)
+r = int(r)
+print("API key= {}\nEngine key= {}\nRelation= {}\nThreshold= {}\nQuery= {}\number of Tuples= {}".format(JSON_API_KEY, SEARCH_ENGINE_ID, r_dict[r], t, q, k))
+                        
+urls = set()
+queries = set()
+not_k_results = True
+iteration_counter = 1
+                        
+# while loop ends when top 10 results are satifisied 
+while not_k_results:
+    query_list = q.lower().strip('\n').split()
+    for each_word in query_list:
+        queries.add(each_word)
+    url_list  = []
+    new_query_url = search(q)
+                        
+    
+    for i in new__query_url:
+        if i not in urls:
+            url_list.append(i)
+            urls.add(i)
+            
+    print("=========== Iteration: {} - Query: {} ===========".format(iteration_counter, q))
+  
+
+    relations = []
+    for key, value in sorted(X.iteritems(), key=lambda (k, v): (v, k), reverse=True):
+        if value < t:
+            del X[key]
+            
+        else:
+            relations.append([value, key[0], key[1]])
+    print("Pruning relations below threshold..."\n"Number of tuples after pruning: {}".format(len(X))\n)
+   
 
