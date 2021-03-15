@@ -20,12 +20,11 @@ bert2spacy = {
 
 #extract text given a url 
 def extract_info(url):
-    page = ""
+    page = ''
     try:
         page = urllib2.urlopen(url).read()
     except Exception as error:
         print "Can't extract textual information. \nException: {}.".format(url, error)
-        return [""]
     soup = bs(page, "html.parser", from_encoding="utf-8")
     for info in soup(["script", "style", "sup"]):
         info.extract()
